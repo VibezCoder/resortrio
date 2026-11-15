@@ -86,7 +86,7 @@ export function SiteMotion() {
           start: "top 75%",
           end: "bottom 20%",
           onToggle: ({ isActive }) => {
-            header.dataset.ink = isActive ? "light" : "dark";
+            header.dataset["ink"] = isActive ? "light" : "dark";
           },
         });
         ScrollTrigger.create({
@@ -94,7 +94,7 @@ export function SiteMotion() {
           start: "top 70%",
           end: "bottom 20%",
           onToggle: ({ isActive }) => {
-            header.dataset.ink = isActive ? "dark" : "light";
+            header.dataset["ink"] = isActive ? "dark" : "light";
           },
         });
       }
