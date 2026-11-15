@@ -6,11 +6,8 @@ import {
   ArrowRight,
   ArrowUpRight,
   Check,
-  ChevronDown,
   Compass,
   Menu,
-  Minus,
-  Plus,
   Sparkles,
   X,
 } from "lucide-react";
@@ -268,6 +265,16 @@ export function SiteHeader() {
   );
 }
 
+export function ResortSiteFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <SiteMotion />
+      <SiteHeader />
+      {children}
+    </>
+  );
+}
+
 function SectionKicker({ children }: { children: React.ReactNode }) {
   return (
     <p className="section-kicker">
@@ -285,22 +292,9 @@ function RoundLink({ href, children }: { href: string; children: React.ReactNode
   );
 }
 
-function EditorialLink({
-  href,
-  children,
-  internal = false,
-}: {
-  href: string;
-  children: React.ReactNode;
-  internal?: boolean;
-}) {
-  const className = "text-link";
-  return internal ? (
-    <Link className={className} to={href as "/accommodation"}>
-      {children} <ArrowUpRight aria-hidden="true" size={15} />
-    </Link>
-  ) : (
-    <a className={className} href={href} {...externalProps}>
+function EditorialLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a className="text-link" href={href} {...externalProps}>
       {children} <ArrowUpRight aria-hidden="true" size={15} />
     </a>
   );

@@ -117,3 +117,26 @@ export const editorialPages = {
 } as const;
 
 export type EditorialPageKey = keyof typeof editorialPages;
+
+export const editorialMetadata: Record<EditorialPageKey, { title: string; description: string }> = {
+  accommodation: {
+    title: "Suites & Villas | Resort Rio, Goa",
+    description: "Explore 13 rooms, suites and private villas at Resort Rio in Arpora, North Goa, and find your place by the Baga River.",
+  },
+  dining: {
+    title: "Dining & Aur Jalsa | Resort Rio, Goa",
+    description: "Discover dining at Resort Rio in North Goa, including Aur Jalsa, its dedicated vegetarian dining experience.",
+  },
+  wellness: {
+    title: "Rio Luxury Spa & Wellness | Resort Rio, Goa",
+    description: "Find a quieter moment at Rio Luxury Spa & Wellness at Resort Rio, Arpora, North Goa.",
+  },
+  celebrations: {
+    title: "Weddings & Events | Resort Rio, Goa",
+    description: "Plan a wedding, celebration or conference by the Baga River at Resort Rio, Arpora, North Goa.",
+  },
+  discover: {
+    title: "Discover Resort Rio | Resort Rio, Goa",
+    description: "Explore the 360° virtual tour, resort offers and experiences at Resort Rio in North Goa.",
+  },
+};
