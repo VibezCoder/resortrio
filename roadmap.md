@@ -1,8 +1,13 @@
 # Resort Rio Website
 
 - [x] Review the brief, official Resort Rio content, existing photos, and booking links.
-- [ ] Finish the home page and the stay, dining, wellness, celebrations, and discovery pages.
-- [ ] Apply the shared editorial style, motion, and accessible responsive navigation.
-- [ ] Run project checks and verify the preview on desktop and mobile.
-- [ ] Save the completed changes.
-- [ ] Keep the remaining work focused and finish promptly.
+- [x] Build complete CSS foundation — Goan sussegado palette, editorial typography, noise texture.
+- [x] Activate motion engine — archway scrub, ±15% parallax, adaptive header inking, staggered reveals.
+- [x] Finish home page and all sub-pages (accommodation, dining, wellness, celebrations, discover).
+- [x] Room filter tabs with smooth cross-dissolve transitions across all 13 tiers.
+- [x] Full-screen curtained navigation menu with numbered editorial links.
+- [x] Persistent direct-booking strip.
+- [x] Replace Lovable CDN assets with real resort photography.
+- [x] Remove all Lovable branding and references.
+- [x] Responsive layouts and prefers-reduced-motion support.
+- [x] Verify in browser — zero console errors, all pages and interactions working.

@@ -1,20 +1,20 @@
 export const resortAssets = {
-  hero: "/__l5e/assets-v1/dfe43b41-833b-459e-9972-2b03ab3ed1b1/hero-resort.webp",
-  river: "/__l5e/assets-v1/a5bfba4f-639b-487a-9f63-bb66fa089d6a/hero-river.webp",
-  sunset: "/__l5e/assets-v1/95a2445d-53d9-4ff4-9afa-9b92e821b3e1/resort-at-sunset.webp",
-  evening: "/__l5e/assets-v1/7fbc8674-d8e1-4d99-84cb-2a05d38eb325/resort-evening.webp",
-  pool: "/__l5e/assets-v1/41cb2f6b-17e1-4769-bd2e-f6822cb3ead1/resort-pool.webp",
-  about: "/__l5e/assets-v1/06e957bb-e8eb-4dae-a88d-655f7b5a8cff/about.webp",
-  room: "/__l5e/assets-v1/89cefc79-849d-4d75-94ba-3c37e2f92b0c/royale-room.jpeg",
-  suite: "/__l5e/assets-v1/0497e126-14f4-45f5-a344-58984eda548f/suite.jpg",
-  villa: "/__l5e/assets-v1/9ed53ee4-1761-4056-b498-7919c20130c2/villa-room.jpg",
-  riverView: "/__l5e/assets-v1/a3221447-2313-466a-97cf-8958238de943/river-view.jpg",
-  spa: "/__l5e/assets-v1/0ac03de4-89d2-4f56-9866-f08e441ca9cc/rio-spa.jpg",
-  dining: "/__l5e/assets-v1/1e200698-3685-467f-99c9-f6a89c12b843/aur-jalsa-dining.webp",
-  wedding: "/__l5e/assets-v1/7a089655-4aff-4f99-b9f4-28f8c8dc70fd/goa-wedding.jpg",
-  events: "/__l5e/assets-v1/302f7694-1236-4f58-b656-2c6962c3bc87/events.jpg",
-  conference: "/__l5e/assets-v1/2403ceca-8d1d-4389-b00e-24bb4af517f2/conference-hall.jpg",
-  logo: "/__l5e/assets-v1/53a141ca-e986-4574-898f-5199d4f3a3db/resort-rio-wordmark.png",
+  hero: "/images/hero.jpg",
+  river: "/images/river-view.jpg",
+  sunset: "/images/sunset.jpg",
+  evening: "/images/evening.jpg",
+  pool: "/images/pool.jpg",
+  about: "/images/about.jpg",
+  room: "/images/room.jpg",
+  suite: "/images/suite.jpg",
+  villa: "/images/villa.jpg",
+  riverView: "/images/river-view.jpg",
+  spa: "/images/spa.jpg",
+  dining: "/images/dining.jpg",
+  wedding: "/images/wedding.jpg",
+  events: "/images/wedding.jpg",
+  conference: "/images/conference.jpg",
+  logo: "/images/logo-white.png",
 };
 
 export const bookingUrl =
@@ -117,6 +117,68 @@ export const editorialPages = {
 } as const;
 
 export type EditorialPageKey = keyof typeof editorialPages;
+
+export const pageStats: Partial<Record<EditorialPageKey, { value: string; label: string }[]>> = {
+  celebrations: [
+    { value: "60,000", label: "sq. ft. of event space" },
+    { value: "1,000+", label: "guests seated" },
+    { value: "14", label: "venues & lawns" },
+    { value: "13", label: "stay tiers on site" },
+  ],
+  wellness: [
+    { value: "6", label: "signature rituals" },
+    { value: "90", label: "minute journeys" },
+    { value: "2", label: "couple suites" },
+    { value: "1", label: "river to slow you down" },
+  ],
+  accommodation: [
+    { value: "13", label: "rooms, suites & villas" },
+    { value: "2", label: "wings · Rio & Royale" },
+    { value: "3", label: "private plunge-pool villas" },
+    { value: "1", label: "Baga River close by" },
+  ],
+};
+
+export const pageFeatures: Partial<
+  Record<EditorialPageKey, { kicker: string; title: string; items: { name: string; note: string; image: string }[] }>
+> = {
+  dining: {
+    kicker: "THREE WAYS TO LINGER",
+    title: "A table for every mood.",
+    items: [
+      { name: "Aur Jalsa", note: "A dedicated pure-vegetarian restaurant celebrating Goan and Indian flavours, served in a room of painted arches.", image: resortAssets.dining },
+      { name: "Poolside & Bar", note: "Slow afternoons by the water — small plates, fresh lime sodas and something colder as the sun drops.", image: resortAssets.pool },
+      { name: "In-Room Dining", note: "Breakfast on the balcony, dinner in robe and slippers. The kitchen keeps unhurried hours.", image: resortAssets.room },
+    ],
+  },
+  wellness: {
+    kicker: "THE RIO LUXURY SPA MENU",
+    title: "Rituals that take their time.",
+    items: [
+      { name: "Abhyanga Warm Oil", note: "A four-hand warm-oil ritual that loosens the week out of your shoulders.", image: resortAssets.spa },
+      { name: "Goan Coconut Wrap", note: "Coconut, rice bran and local botanicals — a wrap that smells like the coast.", image: resortAssets.about },
+      { name: "Couple's River Suite", note: "Two tables, one quiet hour, and the Baga moving slowly somewhere beyond the window.", image: resortAssets.riverView },
+    ],
+  },
+  celebrations: {
+    kicker: "VENUES THAT HOLD A MOMENT",
+    title: "A space for every kind of together.",
+    items: [
+      { name: "Rio World Conference Centre", note: "A pillar-less ballroom and pre-function lawns for conferences that don't feel like conferences.", image: resortAssets.conference },
+      { name: "Riverside Wedding Lawns", note: "Open lawns under the palms for the pheras, the toast and the first dance.", image: resortAssets.wedding },
+      { name: "Poolside Evening Deck", note: "String lights, a long table and the pool catching the last of the light.", image: resortAssets.evening },
+    ],
+  },
+  discover: {
+    kicker: "BEYOND THE GATE",
+    title: "Follow the day a little further.",
+    items: [
+      { name: "360° Virtual Tour", note: "Walk the wings, the lawns and the river edge before you ever pack a bag.", image: resortAssets.river },
+      { name: "Big B Casino", note: "An evening that turns into a story, a short drive from the resort gate.", image: resortAssets.evening },
+      { name: "North Goa Detours", note: "Spice farms, Saturday markets and the quiet backroads of Bardez.", image: resortAssets.about },
+    ],
+  },
+};
 
 export const editorialMetadata: Record<EditorialPageKey, { title: string; description: string }> = {
   accommodation: {

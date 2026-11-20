@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowDown,
@@ -18,6 +18,8 @@ import {
   editorialPages,
   navigationItems,
   officialPages,
+  pageFeatures,
+  pageStats,
   resortAssets,
   rooms,
   type EditorialPageKey,
@@ -81,47 +83,97 @@ export function SiteMotion() {
 
       const header = document.querySelector<HTMLElement>(".rio-header");
       if (header) {
-        ScrollTrigger.create({
-          trigger: "#editorial",
-          start: "top 75%",
-          end: "bottom 20%",
-          onToggle: ({ isActive }) => {
-            header.dataset["ink"] = isActive ? "light" : "dark";
-          },
-        });
-        ScrollTrigger.create({
-          trigger: "#gatherings",
-          start: "top 70%",
-          end: "bottom 20%",
-          onToggle: ({ isActive }) => {
-            header.dataset["ink"] = isActive ? "dark" : "light";
-          },
-        });
+        const inkSections: { selector: string; ink: "light" | "dark" }[] = [
+          { selector: ".arrival", ink: "dark" },
+          { selector: "#editorial", ink: "light" },
+          { selector: "#rooms", ink: "light" },
+          { selector: ".experiences-section", ink: "light" },
+          { selector: ".signature-section", ink: "light" },
+          { selector: ".stay-note", ink: "light" },
+          { selector: ".river-interlude", ink: "dark" },
+          { selector: "#gatherings", ink: "dark" },
+          { selector: "#special-offers", ink: "dark" },
+          { selector: ".editorial-banner", ink: "dark" },
+          { selector: ".editorial-body", ink: "light" },
+          { selector: ".editorial-rooms", ink: "light" },
+          { selector: ".page-stats", ink: "light" },
+          { selector: ".page-features", ink: "light" },
+          { selector: ".discovery-actions", ink: "light" },
+          { selector: ".gathering-venue", ink: "light" },
+          { selector: ".editorial-footer-cta", ink: "dark" },
+          { selector: ".site-footer", ink: "dark" },
+        ];
+
+        const inkEls = inkSections
+          .map(({ selector, ink }) => ({ el: document.querySelector(selector), ink }))
+          .filter((entry): entry is { el: Element; ink: "light" | "dark" } => entry.el !== null);
+
+        const applyInk = () => {
+          const line = header.offsetHeight;
+          let ink: "light" | "dark" = "dark";
+          for (const { el, ink: sectionInk } of inkEls) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= line && rect.bottom > line) {
+              ink = sectionInk;
+              break;
+            }
+          }
+          header.dataset["ink"] = ink;
+        };
+
+        applyInk();
+        window.addEventListener("scroll", applyInk, { passive: true });
+        window.addEventListener("resize", applyInk);
+        const inkCleanup = () => {
+          window.removeEventListener("scroll", applyInk);
+          window.removeEventListener("resize", applyInk);
+        };
+        const previousCleanup = cleanup;
+        cleanup = () => {
+          inkCleanup();
+          previousCleanup();
+        };
       }
 
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => {
         gsap.fromTo(
           element,
-          { autoAlpha: 0, y: 26 },
+          { autoAlpha: 0, y: 32, clipPath: "inset(8% 0% 8% 0%)" },
           {
             autoAlpha: 1,
             y: 0,
-            duration: reducedMotion ? 0 : 0.8,
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: reducedMotion ? 0 : 0.9,
             ease: "power3.out",
             scrollTrigger: { trigger: element, start: "top 88%", once: true },
           },
         );
       });
 
+      document
+        .querySelectorAll<HTMLElement>("[data-reveal] h2, [data-reveal] .section-kicker, .arrival-copy h1")
+        .forEach((heading) => {
+          gsap.fromTo(
+            heading,
+            { letterSpacing: "0.06em" },
+            {
+              letterSpacing: "0em",
+              duration: reducedMotion ? 0 : 1.1,
+              ease: "power2.out",
+              scrollTrigger: { trigger: heading, start: "top 90%", once: true },
+            },
+          );
+        });
+
       document.querySelectorAll<HTMLElement>("[data-stagger]").forEach((grid) => {
         gsap.fromTo(
           grid.children,
-          { autoAlpha: 0, y: 22 },
+          { autoAlpha: 0, y: 28 },
           {
             autoAlpha: 1,
             y: 0,
-            duration: reducedMotion ? 0 : 0.64,
-            stagger: reducedMotion ? 0 : 0.07,
+            duration: reducedMotion ? 0 : 0.7,
+            stagger: reducedMotion ? 0 : 0.08,
             ease: "power3.out",
             scrollTrigger: { trigger: grid, start: "top 88%", once: true },
           },
@@ -130,34 +182,74 @@ export function SiteMotion() {
 
       const imageFrame = document.querySelector<HTMLElement>(".arrival-frame");
       const arrivalCopy = document.querySelector<HTMLElement>(".arrival-copy");
+      const arrival = document.querySelector<HTMLElement>(".arrival");
+      const announcement = document.querySelector<HTMLElement>(".announcement-bar");
 
-      if (imageFrame && !reducedMotion) {
-        gsap.fromTo(
-          imageFrame,
-          { borderRadius: "48% 48% 2px 2px", scale: 0.84 },
-          {
-            borderRadius: "2px",
-            scale: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: ".arrival",
-              start: "top top",
-              end: "bottom top",
-              scrub: 1,
-            },
+      if (imageFrame && arrival && !reducedMotion) {
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: arrival,
+            start: "top top",
+            end: "+=75%",
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
           },
+        });
+        timeline.fromTo(
+          imageFrame,
+          { left: "0%", right: "0%", top: "0%", bottom: "0%", borderRadius: "0px" },
+          {
+            left: "31%",
+            right: "31%",
+            top: "12%",
+            bottom: "7%",
+            borderRadius: "50% 50% 14px 14px / 42% 42% 14px 14px",
+            boxShadow: "0 0 0 1px rgba(197, 160, 89, 0.4), 0 24px 80px rgba(0, 0, 0, 0.5)",
+            ease: "none",
+            duration: 1,
+          },
+          0,
         );
-      }
-
-      if (arrivalCopy) {
-        gsap.to(arrivalCopy, {
-          y: -72,
+        if (arrivalCopy) {
+          timeline.to(
+            arrivalCopy,
+            {
+              scale: 1.18,
+              y: -48,
+              autoAlpha: 0,
+              transformOrigin: "50% 100%",
+              ease: "none",
+              duration: 0.6,
+            },
+            0,
+          );
+        }
+        if (announcement) {
+          timeline.to(
+            announcement,
+            {
+              autoAlpha: 0,
+              y: -14,
+              filter: "blur(10px)",
+              letterSpacing: "0.5em",
+              ease: "none",
+              duration: 0.3,
+            },
+            0,
+          );
+        }
+      } else if (announcement && !reducedMotion) {
+        gsap.to(announcement, {
           autoAlpha: 0,
+          y: -14,
+          filter: "blur(10px)",
+          letterSpacing: "0.5em",
           ease: "none",
           scrollTrigger: {
-            trigger: ".arrival",
+            trigger: document.body,
             start: "top top",
-            end: "55% top",
+            end: "+=220",
             scrub: true,
           },
         });
@@ -168,9 +260,9 @@ export function SiteMotion() {
         if (!image || reducedMotion) return;
         gsap.fromTo(
           image,
-          { yPercent: -8 },
+          { yPercent: -15 },
           {
-            yPercent: 8,
+            yPercent: 15,
             ease: "none",
             scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: true },
           },
@@ -254,6 +346,7 @@ export function SiteHeader() {
           <a className="menu-book" href={bookingUrl} {...externalProps}>
             Reserve directly <ArrowUpRight aria-hidden="true" size={16} />
           </a>
+          <p className="menu-coordinates">15°33′ N&nbsp; 73°45′ E · Arpora, North Goa</p>
         </div>
       </div>
       <div className="announcement-bar">
@@ -265,12 +358,87 @@ export function SiteHeader() {
   );
 }
 
+const bookingPerks = [
+  "Best rate, guaranteed",
+  "Free cancellation",
+  "Complimentary breakfast",
+  "Priority river-view rooms",
+];
+
+export function ReservationBar() {
+  const [open, setOpen] = useState(false);
+  const today = new Date();
+  const iso = (d: Date) => d.toISOString().slice(0, 10);
+  const defaultIn = iso(today);
+  const defaultOut = iso(new Date(today.getTime() + 2 * 86400000));
+  const [checkIn, setCheckIn] = useState(defaultIn);
+  const [checkOut, setCheckOut] = useState(defaultOut);
+  const [guests, setGuests] = useState("2");
+
+  return (
+    <div className={`reservation-bar${open ? " is-open" : ""}`}>
+      <div className="reservation-panel" aria-hidden={!open}>
+        <div className="reservation-fields">
+          <label className="reservation-field">
+            <span>Check-in</span>
+            <input type="date" value={checkIn} min={defaultIn} onChange={(e) => setCheckIn(e.target.value)} />
+          </label>
+          <label className="reservation-field">
+            <span>Check-out</span>
+            <input type="date" value={checkOut} min={checkIn} onChange={(e) => setCheckOut(e.target.value)} />
+          </label>
+          <label className="reservation-field">
+            <span>Guests</span>
+            <select value={guests} onChange={(e) => setGuests(e.target.value)}>
+              {["1", "2", "3", "4", "5", "6+"].map((n) => (
+                <option key={n} value={n}>{n} {n === "1" ? "guest" : "guests"}</option>
+              ))}
+            </select>
+          </label>
+          <a className="reservation-search" href={bookingUrl} {...externalProps}>
+            Search availability <ArrowUpRight aria-hidden="true" size={15} />
+          </a>
+        </div>
+        <div className="reservation-perks">
+          {bookingPerks.map((perk) => (
+            <span key={perk}><Check aria-hidden="true" size={13} /> {perk}</span>
+          ))}
+        </div>
+      </div>
+      <div className="reservation-row">
+        <div className="reservation-copy">
+          <span className="booking-spark"><Sparkles aria-hidden="true" size={15} /></span>
+          <div>
+            <p className="booking-title">Make Goa yours.</p>
+            <p className="booking-note">Rooms, suites and private villas await.</p>
+          </div>
+        </div>
+        <div className="reservation-actions">
+          <a className="booking-button" href={bookingUrl} {...externalProps}>
+            Check availability <ArrowUpRight aria-hidden="true" size={15} />
+          </a>
+          <button
+            type="button"
+            className="reservation-toggle"
+            aria-expanded={open}
+            aria-label={open ? "Collapse reservation options" : "Expand reservation options"}
+            onClick={() => setOpen(!open)}
+          >
+            <ArrowDown aria-hidden="true" size={16} className={open ? "is-flipped" : ""} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ResortSiteFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       <SiteMotion />
       <SiteHeader />
       {children}
+      <ReservationBar />
     </>
   );
 }
@@ -339,19 +507,6 @@ export function HomePage() {
           <div className="arrival-caption">THE RIVER FINDS ITS WAY, AND SO WILL YOU.</div>
         </div>
       </section>
-
-      <div className="booking-strip" id="book-direct">
-        <div className="booking-copy">
-          <span className="booking-spark"><Sparkles aria-hidden="true" size={16} /></span>
-          <div>
-            <p className="booking-title">Make Goa yours.</p>
-            <p className="booking-note">Rooms, suites and private villas await.</p>
-          </div>
-        </div>
-        <a className="booking-button" href={bookingUrl} {...externalProps}>
-          Check availability <ArrowUpRight aria-hidden="true" size={16} />
-        </a>
-      </div>
 
       <section className="intro-section paper-grain" id="editorial">
         <div className="intro-meta" data-reveal>
@@ -498,7 +653,35 @@ const roomFilters = [
 
 function RoomCollection() {
   const [filter, setFilter] = useState<string>("all");
+  const gridRef = useRef<HTMLDivElement>(null);
   const visibleRooms = rooms.filter((room) => filter === "all" || room.group === filter);
+
+  const handleFilter = (value: string) => {
+    if (value === filter || !gridRef.current) {
+      setFilter(value);
+      return;
+    }
+    const grid = gridRef.current;
+    import("gsap").then(({ gsap }) => {
+      gsap.to(grid, {
+        autoAlpha: 0,
+        y: 12,
+        duration: 0.22,
+        ease: "power2.in",
+        onComplete: () => {
+          setFilter(value);
+          requestAnimationFrame(() => {
+            gsap.fromTo(
+              grid.children,
+              { autoAlpha: 0, y: 20 },
+              { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.05, ease: "power3.out" },
+            );
+            gsap.set(grid, { autoAlpha: 1, y: 0 });
+          });
+        },
+      });
+    });
+  };
 
   return (
     <>
@@ -512,13 +695,13 @@ function RoomCollection() {
             size="sm"
             className={`filter-button${filter === option.value ? " is-selected" : ""}`}
             aria-pressed={filter === option.value}
-            onClick={() => setFilter(option.value)}
+            onClick={() => handleFilter(option.value)}
           >
             {option.label}
           </Button>
         ))}
       </div>
-      <div className="room-grid" data-stagger>
+      <div className="room-grid" data-stagger ref={gridRef}>
         {visibleRooms.map((room, index) => (
           <article className={`room-card${index === 0 && filter === "all" ? " room-card-featured" : ""}`} key={room.name}>
             <a className="room-image-frame" href={room.href} {...externalProps} aria-label={`View ${room.name}`}>
@@ -617,6 +800,37 @@ export function EditorialPage({ page }: { page: EditorialPageKey }) {
           <div className="editorial-side-note"><span>GOOD THINGS TAKE THEIR TIME.</span><ArrowDownRight aria-hidden="true" size={17} /></div>
         </div>
       </section>
+
+      {pageStats[page] ? (
+        <section className="page-stats paper-grain" aria-label="Key figures">
+          {pageStats[page]!.map((stat) => (
+            <div className="stat-cell" key={stat.label} data-reveal>
+              <span className="stat-value">{stat.value}</span>
+              <span className="stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </section>
+      ) : null}
+
+      {pageFeatures[page] ? (
+        <section className="page-features paper-grain" aria-labelledby="features-heading">
+          <div className="section-heading" data-reveal>
+            <div>
+              <SectionKicker>{pageFeatures[page]!.kicker}</SectionKicker>
+              <h2 id="features-heading">{pageFeatures[page]!.title}</h2>
+            </div>
+          </div>
+          <div className="feature-grid" data-stagger>
+            {pageFeatures[page]!.items.map((item) => (
+              <article className="feature-card" key={item.name}>
+                <div className="feature-photo"><img src={item.image} alt={item.name} loading="lazy" /></div>
+                <h3>{item.name}</h3>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {isAccommodation ? (
         <section className="rooms-section paper-grain editorial-rooms" id="rooms" aria-labelledby="rooms-heading">
