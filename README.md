@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# resortrio
+
+Completely transform this website from a static layout into an editorial, Awwwards-caliber digital experience with rich kinetic motion and deep atmospheric polish.
+https://www.resortrio.com/
+You have my permission as the owner to access the images and videos from this website and use it in the updated one. I dont want to generate any image.
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/dfe8c1e2-f6ca-4fb9-9883-8a8b0c5d05c2).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
